@@ -63,7 +63,8 @@ SRCS = \
   display.c\
   ui_normal.c\
   hw_ticks.c\
-  rtc_hal.c 
+  rtc_hal.c\
+  buttons.c 
 
 SRCSASM = \
   startup_stm32f10x_hd.s 
@@ -79,7 +80,9 @@ misc.c \
 stm32f10x_bkp.c \
 stm32f10x_pwr.c \
 stm32f10x_rtc.c \
-stm32f10x_spi.c
+stm32f10x_spi.c \
+stm32f10x_tim.c \
+stm32f10x_exti.c
 #core_cm3.c #comment in v3.6
 
 #######################################

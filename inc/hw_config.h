@@ -28,4 +28,10 @@ void OLED_IO_Init(void);
 void NVIC_Configuration(void);
 void SysTick_Configuration(void);
 void Set_System(void);
+
+void BUTTON_ResetDebouncedState(Button_TypeDef);
+uint16_t BUTTON_GetDebouncedTime(Button_TypeDef);
+uint8_t BUTTON_GetSate(Button_TypeDef);
+void BUTTON_EXTI_Config(Button_TypeDef,FunctionalState);
+void BUTTON_Init(Button_TypeDef,ButtonMode_TypeDef);
 #endif

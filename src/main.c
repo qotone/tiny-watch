@@ -8,6 +8,7 @@
 #include "hw_config.h"
 #include "display.h"
 #include "rtc_hal.h"
+#include "buttons.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 
@@ -32,13 +33,18 @@ void Timing_Decrement(void)
   {
     TimingLED = 1000;
     //    GPIO_ResetBits(GPIOC, GPIO_Pin_2);
-        GPIOC->ODR ^= 1 << 2;
+    //        GPIOC->ODR ^= 1 << 2;
 	//    timeUpdate = true;
   }
 }
 
 /* Private function prototypes -----------------------------------------------*/
 
+static bool ledToggle(void)
+{
+  GPIOC->ODR ^= 1<<2;
+  return true;
+}
 //GPIO_InitTypeDef gpio_init;
 
 /**
@@ -64,7 +70,8 @@ int main(void)
   GPIO_Init(GPIOC,&gpio_init);
   GPIO_SetBits(GPIOC, GPIO_Pin_2);
 
-
+  buttons_init();
+  button_setFunc(BUTTON1,ledToggle);
   //  if(BKP_ReadBackupRegister(BKP_DR1) != 0xA5A5)
   //  {
     //    time_t tmpTime = 1451221698;
@@ -126,6 +133,7 @@ int main(void)
   //  display_update();
   }
   display_update();
+  buttons_update();
  }
 
 
