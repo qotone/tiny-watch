@@ -64,7 +64,15 @@ SRCS = \
   ui_normal.c\
   hw_ticks.c\
   rtc_hal.c\
-  buttons.c 
+  buttons.c \
+  retarget.c \
+  sdio_sdcard.c \
+  Q_fatfs.c \
+  diskio.c \
+  ff.c \
+fatfs_sd_sdio.c \
+syscall.c \
+unicode.c \
 
 SRCSASM = \
   startup_stm32f10x_hd.s 
@@ -82,7 +90,10 @@ stm32f10x_pwr.c \
 stm32f10x_rtc.c \
 stm32f10x_spi.c \
 stm32f10x_tim.c \
-stm32f10x_exti.c
+stm32f10x_exti.c \
+stm32f10x_dma.c \
+stm32f10x_sdio.c 
+
 #core_cm3.c #comment in v3.6
 
 #######################################

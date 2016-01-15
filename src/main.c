@@ -9,16 +9,25 @@
 #include "display.h"
 #include "rtc_hal.h"
 #include "buttons.h"
+#include "sdio_sdcard.h"
+#include "ff.h"
+#include "Q_fatfs.h"
+
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+FATFS FatFs;
+FIL fil;
+
 int16_t time_hour,time_mins,time_secs;
 volatile uint16_t TimingLED = 1000;
 bool timeUpdate = false;
 extern void watchUI_normal(void);
+extern void retarget_init(void);
+
 void Timing_Decrement(void)
 {
   /* do something like this */
@@ -54,13 +63,19 @@ static bool ledToggle(void)
   */
 int main(void)
 {
+  Q_FATFS_Size_t size;
+  uint8_t st;
+  UINT br;
+  char mydiskPath[4];
+  uint32_t wbytes;
+  uint8_t wtext[]= "ok,This is text to write logical disk .2016-1-15.";
 
   time_t tmpTime = 1451221698;
   struct tm *ntime;
   Set_System();
 
   SysTick_Configuration();
-
+  SDIO_Configuration();
 
     GPIO_InitTypeDef gpio_init;
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
@@ -69,6 +84,7 @@ int main(void)
   gpio_init.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_Init(GPIOC,&gpio_init);
   GPIO_SetBits(GPIOC, GPIO_Pin_2);
+  retarget_init();
 
   buttons_init();
   button_setFunc(BUTTON1,ledToggle);
@@ -120,6 +136,22 @@ int main(void)
  display_load();
  // display_update();
  // SysTick_Disable();
+ printf("====== This is a Demo =======\n");
+ if((st = f_mount(&FatFs, "SD:",1)) == FR_OK)
+ {
+   printf("Mount OK! \n");
+   st= f_open(&fil, "SD:my_file_sd.txt", FA_CREATE_ALWAYS | FA_WRITE);
+   printf("Open file OK.%d.\n",st);
+   st= f_write(&fil,wtext,sizeof(wtext),(void *)&wbytes);
+   printf("write string to file OK!\n");
+   Q_FATFS_GetDriveSize("SD:",&size);
+   printf("The size of this SDCARD is:%ld, and the free size is: %ld.\n",size.TotalSize,size.FreeSize);
+   f_close(&fil);
+   f_mount(0,"SD:",1);
+ }
+ else
+   printf("Wrong.%d\n",st);
+ printf("======== End =========\n");
  while(1)
  {
    if(timeUpdate)

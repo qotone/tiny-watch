@@ -63,9 +63,11 @@ typedef enum
 
 
 // NVIC Priorities based on NVIC_PriorityGroup_4
+
 #define RTCALARM_IRQ_PRIORITY    3
 #define RTC_IRQ_PRIORITY    4
 #define TIM1_CC_IRQ_PRIORITY    5
+#define SDIO_IRQ_PRIORITY    6
 #define EXTI2_IRQ_PRIORITY    11
 #define EXTI1_IRQ_PRIORITY    11
 #define SYSTICK_IRQ_PRIORITY    12

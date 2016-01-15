@@ -26,6 +26,7 @@
 #include "hw_ticks.h"
 #include "rtc_hal.h"
 #include <stdbool.h>
+#include "sdio_sdcard.h"
 /** @addtogroup STM32F10x_StdPeriph_Examples
   * @{
   */
@@ -170,6 +171,18 @@ void RTC_IRQHandler(void)
       timeUpdate = true;
   }
 
+}
+
+
+/**
+ * @brief : 在SDIO_ITConfig()这个函数开启了sdio 中断，数据传输结束时产生中断
+ * @param none
+ * @retval None
+ */
+void SDIO_IRQHandler(void)
+{
+  /* Process All SDIO Interrupt Sources */
+  SD_ProcessIRQSrc();
 }
 
 /******************************************************************************/
